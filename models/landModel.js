@@ -15,7 +15,7 @@ var landSchema = mongoose.Schema({
     }
 });
 
-// Export Contact model
+// Export Land model
 var Land = module.exports = mongoose.model('Land', landSchema);
 
 module.exports.get = function(callback, limit) {

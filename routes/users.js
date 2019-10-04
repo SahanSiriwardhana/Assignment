@@ -37,12 +37,12 @@ router.post('/signup', (req, res, next) => {
         } else {
             User.find({
                 email: req.body.email
-            }, (err, previosEmail) => {
+            }, (err, previousEmail) => {
                 if (err) {
                     return res.status(500).json({
                         message: 'Error: server error',
                     });
-                } else if (previosEmail.length > 0) {
+                } else if (previousEmail.length > 0) {
                     return res.status(500).json({
                         message: 'Error: Account already exist',
                     });
@@ -87,6 +87,8 @@ router.post('/signup', (req, res, next) => {
 
 });
 
+//@route POST /users/login
+//@desc Login ti the system
 router.post('/login', (req, res, next) => {
     User.find({ email: req.body.email })
         .exec()
@@ -106,7 +108,8 @@ router.post('/login', (req, res, next) => {
                   //-----------adding token -----------
                  const token= jwt.sign({
                     email:user[0].email,
-                    userID:user[0]._id
+                    userID:user[0]._id,
+                    userType:user[0].user_type,
                   },"secret",
                   {
                     expiresIn:"1h"

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-// Import user controlle
+// Import user controller
 var userController = require('../controllers/userController');
 /* GET login page. */
 router.get('/', function(req, res, next) {

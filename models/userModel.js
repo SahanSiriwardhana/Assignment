@@ -8,10 +8,14 @@ var userSchema = mongoose.Schema({
     create_date: {
         type: Date,
         default: Date.now
+    },
+    user_type: {
+        type: String,
+        default: 'user'
     }
 });
 
-// Export Contact model
+// Export User model
 var User = module.exports = mongoose.model('User', userSchema);
 
 module.exports.get = function(callback, limit) {

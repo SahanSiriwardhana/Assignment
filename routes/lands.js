@@ -14,18 +14,19 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage })
 
-
+//@route GET /lands/
+//@desc Show all lands
 routerLand.get('/', (req, res, next) => {
     Land.find()
         .sort({ create_date: -1 })
         .then(lands => {
             if(lands.length>=0){
-            res.status(200).json(lands);
-        }else{
-            res.status(404).json({
-                message:"No data found"
+                res.status(200).json(lands);
+            }else{
+                res.status(404).json({
+                    message:"No data found"
             });
-        }
+            }
         })
         .catch(err => {
             res.status(500).json({
@@ -34,7 +35,8 @@ routerLand.get('/', (req, res, next) => {
         });
 });
 
-
+//@route POST /users/enter
+//@desc Add new land
 routerLand.post('/enter', upload.single('landImage'), (req, res, next) => {
     const scheema = Joi.object().keys({
         title: Joi.string().required(),
@@ -78,7 +80,8 @@ routerLand.post('/enter', upload.single('landImage'), (req, res, next) => {
     })
 });
 
-
+//@route GET /users/id
+//@desc View individual land details 
 routerLand.get('/:id',(req,res,next)=>{
     var id=req.params.id;
     Land.findById(id)
@@ -102,7 +105,8 @@ routerLand.get('/:id',(req,res,next)=>{
 });
 
 
-
+//@route DELETE /lands/signup
+//@desc Delete land
 routerLand.delete('/:id',(req,res,next)=>{
     var id=req.params.id;
     Land.remove({_id:id})
@@ -118,6 +122,8 @@ routerLand.delete('/:id',(req,res,next)=>{
     });
 });
 
+//@route PATCH /users/id
+//@desc Update land
 routerLand.patch('/:id',(req,res,next)=>{
     var id=req.params.id;
     Land.update({_id:id},{$set:{

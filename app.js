@@ -9,33 +9,35 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 
-
-
 // Import routes
-let apiRoutes = require("./routes/api-routes");
 var usersRouter = require('./routes/users');
 var landsRouter = require('./routes/lands');
+
 // Setup server port
 var port = process.env.PORT || 8080;
 var app = express();
+
 // Configure bodyparser to handle post requests
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
-app.use(cors())
-app.use('/uploads',express.static('uploads'))
+app.use(cors());
+app.use('/uploads',express.static('uploads'));
+
 // Connect to Mongoose and set connection variable
-// Deprecated: mongoose.connect('mongodb://localhost/resthub');
+// Deprecated: mongoose.connect('mongodb://localhost/TestDb');
 mongoose.connect('mongodb://localhost/TestDb', { useNewUrlParser: true});
-
+mongoose.set('useCreateIndex', true);
 var db = mongoose.connection;
-// Added check for DB connection
-if(!db)
-    console.log("Error connecting db")
-else
-    console.log("Db connected successfully")
 
+// Added check for DB connection
+if(!db){
+    console.log("Error connecting db")
+  }
+else{
+    console.log("Db connected successfully")
+  }
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -46,16 +48,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
-
 // Use Api routes in the App
-app.use('/api', apiRoutes)
 app.use('/users', usersRouter);
 app.use('/lands',landsRouter);
-app.get('/login',function(req,res,next){
-  res.send('This is from login');
-});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
